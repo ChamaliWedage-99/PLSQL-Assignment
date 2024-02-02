@@ -1,0 +1,8 @@
+CREATE TABLE chamali_fooditem_tab(
+       item_id NUMBER,
+       available_qty NUMBER ,
+       scrapped_qty NUMBER ,
+       reserved_qty NUMBER ,
+       item_name VARCHAR2(500),
+       PRIMARY KEY (item_id)
+);

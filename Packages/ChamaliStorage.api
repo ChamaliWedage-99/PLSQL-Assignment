@@ -1,0 +1,18 @@
+CREATE OR REPLACE PACKAGE CHAMALI_STORAGE_API AS
+  PROCEDURE insert_storage(storage_id_   IN NUMBER,
+                           status_       IN VARCHAR2,
+                           item_id_      IN NUMBER,
+                           container_id_ IN NUMBER);
+
+  -- CUD operations
+  --update
+  PROCEDURE update_record(storage_id_   IN NUMBER,
+                          status_       IN VARCHAR2,
+                          item_id_      IN NUMBER,
+                          container_id_ IN NUMBER);
+
+  --delete
+  PROCEDURE delete_record(storage_id_ IN NUMBER);
+
+END CHAMALI_STORAGE_API;
+/

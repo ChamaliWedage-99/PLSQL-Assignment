@@ -1,0 +1,31 @@
+CREATE OR REPLACE PACKAGE CHAMALI_COMPANY_API AS
+
+  --PROCEDURES 
+  PROCEDURE insert_company(company_name_    IN VARCHAR2,
+                           company_address_ IN VARCHAR2);
+
+  -- CUD operations
+
+  --update
+  PROCEDURE update_record(company_reg_no_ IN VARCHAR2,
+                          company_name_   IN VARCHAR2);
+
+  --delete
+  PROCEDURE delete_record(company_reg_no_ IN NUMBER);
+  
+  
+  
+
+  --FUNCTIONS
+
+  --get the company name
+  FUNCTION get_company_name(company_reg_no_ IN NUMBER) RETURN VARCHAR2;
+
+  --get the company registration no
+  FUNCTION get_company_reg_no(company_name_ IN VARCHAR2) RETURN NUMBER;
+
+  --get the company address
+  FUNCTION get_company_address(company_reg_no_ IN NUMBER) RETURN VARCHAR2;
+
+END CHAMALI_COMPANY_API;
+/

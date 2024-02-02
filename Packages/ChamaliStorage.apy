@@ -1,0 +1,35 @@
+CREATE OR REPLACE PACKAGE BODY CHAMALI_STORAGE_API AS
+  PROCEDURE insert_storage(storage_id_   IN NUMBER,
+                           status_       IN VARCHAR2,
+                           item_id_      in NUMBER,
+                           container_id_ IN NUMBER) IS
+  BEGIN
+    INSERT INTO chamali_storage_tab
+      (storage_id, status, item_id, container_id)
+    VALUES
+      (storage_id_, status_, item_id_, container_id_);
+  END insert_storage;
+
+  --CUD Operations
+
+  --update
+  PROCEDURE update_record(storage_id_   IN NUMBER,
+                          status_       IN VARCHAR2,
+                          item_id_      IN NUMBER,
+                          container_id_ IN NUMBER) IS
+  BEGIN
+    UPDATE CHAMALI_STORAGE_TAB
+       SET storage_id   = storage_id_,
+           status       = status_,
+           item_id      = item_id_,
+           container_id = container_id_
+     WHERE storage_id = storage_id_;
+  END update_record;
+
+  --delete
+  PROCEDURE delete_record(storage_id_ IN NUMBER) IS
+  BEGIN
+    DELETE FROM CHAMALI_STORAGE_TAB WHERE storage_id = storage_id_;
+  END delete_record;
+END CHAMALI_STORAGE_API;
+/

@@ -1,0 +1,172 @@
+CREATE OR REPLACE PACKAGE BODY CHAMALI_BRANCH_API AS
+
+  --PROCEDURES
+  PROCEDURE insert_branch(branch_name_              IN VARCHAR2,
+                          branch_address_           IN VARCHAR2,
+                          branch_manager_           IN VARCHAR2,
+                          total_warehouse_capacity_ IN NUMBER,
+                          item_id_                  IN NUMBER,
+                          company_reg_no_           IN NUMBER,
+                          container_id_             IN NUMBER) IS
+  BEGIN
+    INSERT INTO CHAMALI_BRANCH_TAB
+      (branch_name,
+       branch_address,
+       branch_manager,
+       total_warehouse_capacity,
+       item_id,
+       company_reg_no,
+       container_id)
+    VALUES
+      (branch_name_,
+       branch_address_,
+       branch_manager_,
+       total_warehouse_capacity_,
+       item_id_,
+       company_reg_no_,
+       container_id_);
+  END insert_branch;
+
+  -- get current inventory info
+
+  PROCEDURE get_current_inv_info(branch_id_ IN NUMBER) IS
+    available_qty_ NUMBER;
+    item_id_       NUMBER;
+  BEGIN
+    FOR inv_info_rec IN (SELECT available_qty, item_id
+                           FROM CHAMALI_FOODITEM_TAB
+                          WHERE item_id IN
+                                (SELECT item_id
+                                   FROM CHAMALI_BRANCH_TAB
+                                  WHERE branch_id = branch_id_)) LOOP
+      -- Display information for each record
+      available_qty_ := inv_info_rec.available_qty;
+      item_id_       := inv_info_rec.item_id;
+    
+      dbms_output.put_line('Available Quantity: ' || available_qty_ ||
+                           ', Item ID: ' || item_id_);
+    END LOOP;
+  
+  END get_current_inv_info;
+
+  --CUD Operations
+
+  --update
+  PROCEDURE update_record(branch_id_                IN VARCHAR2,
+                          branch_address_           IN VARCHAR2,
+                          branch_manager_           IN VARCHAR2,
+                          total_warehouse_capacity_ IN NUMBER) IS
+  BEGIN
+    UPDATE CHAMALI_BRANCH_TAB
+       SET branch_id                = branch_id_,
+           branch_address           = branch_address_,
+           branch_manager           = branch_manager_,
+           total_warehouse_capacity = total_warehouse_capacity_
+     WHERE branch_id = branch_id_;
+  END update_record;
+
+  --delete
+  PROCEDURE delete_record(branch_id_ IN NUMBER) IS
+  BEGIN
+    DELETE FROM CHAMALI_BRANCH_TAB WHERE branch_id = branch_id_;
+  END delete_record;
+
+  --FUNCTIONS
+
+  --get the branch name
+  FUNCTION get_branch_name(branch_id_ IN NUMBER) RETURN VARCHAR2 IS
+    result4_ VARCHAR2(200);
+  
+    CURSOR get_b_name IS
+      SELECT branch_name
+        FROM CHAMALI_BRANCH_TAB
+       WHERE branch_id = branch_id_;
+  BEGIN
+    OPEN get_b_name;
+    FETCH get_b_name
+      INTO result4_;
+    CLOSE get_b_name;
+  
+    RETURN result4_;
+  END get_branch_name;
+
+  --get the branch address
+  FUNCTION get_branch_address(branch_id_ IN NUMBER) RETURN VARCHAR2 IS
+    result5_ VARCHAR2(4000);
+  
+    CURSOR get_b_address IS
+      SELECT branch_address
+        FROM CHAMALI_BRANCH_TAB
+       WHERE branch_id = branch_id_;
+  BEGIN
+    OPEN get_b_address;
+    FETCH get_b_address
+      INTO result5_;
+    CLOSE get_b_address;
+  
+    RETURN result5_;
+  END get_branch_address;
+
+  --get the branch manager
+  FUNCTION get_branch_manager(branch_id_ IN NUMBER) RETURN VARCHAR2 IS
+    result6_ VARCHAR2(200);
+  
+    CURSOR get_b_manager IS
+      SELECT branch_manager
+        FROM CHAMALI_BRANCH_TAB
+       WHERE branch_id = branch_id_;
+  BEGIN
+    OPEN get_b_manager;
+    FETCH get_b_manager
+      INTO result6_;
+    CLOSE get_b_manager;
+  
+    RETURN result6_;
+  END get_branch_manager;
+
+  --get the total warehouse capacity
+  FUNCTION get_tw_capacity(branch_id_ IN NUMBER) RETURN NUMBER IS
+    result7_ NUMBER;
+  
+    CURSOR get_tw_capa IS
+      SELECT total_warehouse_capacity
+        FROM CHAMALI_BRANCH_TAB
+       WHERE branch_id = branch_id_;
+  BEGIN
+    OPEN get_tw_capa;
+    FETCH get_tw_capa
+      INTO result7_;
+    CLOSE get_tw_capa;
+  
+    RETURN result7_;
+  END get_tw_capacity;
+
+  --get the remaining capacity
+  FUNCTION get_remaining_capacity(branch_id_ IN NUMBER) RETURN NUMBER IS
+    result8_ NUMBER;
+  
+  BEGIN
+    -- Retrieve total warehouse capacity
+    SELECT (SELECT total_warehouse_capacity
+               FROM CHAMALI_BRANCH_TAB
+              WHERE branch_id = branch_id_) -
+           
+           -- Retrieve total current volume
+            COALESCE((SELECT SUM(max_volume)
+                       FROM CHAMALI_CONTAINER_TAB
+                      WHERE container_id IN
+                            (SELECT container_id
+                               FROM CHAMALI_STORAGE_TAB
+                              WHERE status = 'Occupied' AND
+                                    branch_id = branch_id_) AND
+                            branch_id = branch_id_),
+                     0)
+    
+      INTO result8_
+      FROM DUAL;
+  
+    RETURN result8_;
+  END get_remaining_capacity;
+
+END CHAMALI_BRANCH_API;
+/

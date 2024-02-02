@@ -1,0 +1,43 @@
+CREATE OR REPLACE PACKAGE CHAMALI_BRANCH_API AS
+
+  --PROCEDURE
+  PROCEDURE insert_branch(branch_name_              IN VARCHAR2,
+                          branch_address_           IN VARCHAR2,
+                          branch_manager_           IN VARCHAR2,
+                          total_warehouse_capacity_ IN NUMBER,
+                          item_id_                  IN NUMBER,
+                          company_reg_no_           IN NUMBER,
+                          container_id_             IN NUMBER);
+
+  -- CUD operations
+  --update
+  PROCEDURE update_record(branch_id_                IN VARCHAR2,
+                          branch_address_           IN VARCHAR2,
+                          branch_manager_           IN VARCHAR2,
+                          total_warehouse_capacity_ IN NUMBER);
+
+  --delete
+  PROCEDURE delete_record(branch_id_ IN NUMBER);
+
+  --get current inventory info
+  PROCEDURE get_current_inv_info(branch_id_ IN NUMBER);
+
+  --FUNCTIONS
+
+  --get the branch name
+  FUNCTION get_branch_name(branch_id_ IN NUMBER) RETURN VARCHAR2;
+
+  --get the branch address
+  FUNCTION get_branch_address(branch_id_ IN NUMBER) RETURN VARCHAR2;
+
+  --get the branch manager
+  FUNCTION get_branch_manager(branch_id_ IN NUMBER) RETURN VARCHAR2;
+
+  --get the total warehouse capacity
+  FUNCTION get_tw_capacity(branch_id_ IN NUMBER) RETURN NUMBER;
+
+  --get the remaining capacity
+  FUNCTION get_remaining_capacity(branch_id_ IN NUMBER) RETURN NUMBER;
+
+END CHAMALI_BRANCH_API;
+/

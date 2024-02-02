@@ -1,0 +1,7 @@
+CREATE TABLE chamali_storage_tab (
+    storage_id NUMBER,
+    status VARCHAR2(10),  
+    item_id NUMBER,
+    container_id NUMBER,
+    PRIMARY KEY (storage_id, item_id, container_id)
+);

@@ -1,0 +1,84 @@
+CREATE OR REPLACE PACKAGE BODY CHAMALI_COMPANY_API AS
+
+  --PROCEDURES
+  PROCEDURE insert_company(company_name_    IN VARCHAR2,
+                           company_address_ IN VARCHAR2) IS
+  BEGIN
+    INSERT INTO chamali_company_tab
+      (company_name, company_address)
+    VALUES
+      (company_name_, company_address_);
+  END insert_company;
+
+  --CUD Operations
+
+  --update
+  PROCEDURE update_record(company_reg_no_ IN VARCHAR2,
+                          company_name_   IN VARCHAR2) IS
+  BEGIN
+    UPDATE CHAMALI_COMPANY_TAB
+       SET company_name = company_name_
+     WHERE company_reg_no = company_reg_no_;
+  END update_record;
+
+  --delete
+  PROCEDURE delete_record(company_reg_no_ IN NUMBER) IS
+  BEGIN
+    DELETE FROM CHAMALI_COMPANY_TAB WHERE company_reg_no = company_reg_no_;
+  END delete_record;
+
+  --FUNCTIONS 
+
+  --get the company name
+  FUNCTION get_company_name(company_reg_no_ IN NUMBER) RETURN VARCHAR2 IS
+    result_ VARCHAR2(200);
+  
+    CURSOR get_comp_name IS
+      SELECT company_name
+        FROM CHAMALI_COMPANY_TAB
+       WHERE company_reg_no = company_reg_no_;
+  BEGIN
+    OPEN get_comp_name;
+    FETCH get_comp_name
+      INTO result_;
+    CLOSE get_comp_name;
+  
+    RETURN result_;
+  END get_company_name;
+
+  --get the company registration no
+  FUNCTION get_company_reg_no(company_name_ IN VARCHAR2) RETURN NUMBER IS
+    result2_ NUMBER;
+  
+    CURSOR get_comp_reg_no IS
+      SELECT company_reg_no
+        FROM CHAMALI_COMPANY_TAB
+       WHERE company_name = company_name_;
+  BEGIN
+    OPEN get_comp_reg_no;
+    FETCH get_comp_reg_no
+      INTO result2_;
+    CLOSE get_comp_reg_no;
+  
+    RETURN result2_;
+  END get_company_reg_no;
+
+  --get the company address
+  FUNCTION get_company_address(company_reg_no_ IN NUMBER) RETURN VARCHAR2 IS
+    result3_ VARCHAR2(4000);
+  
+    CURSOR get_comp_address IS
+      SELECT company_address
+        FROM CHAMALI_COMPANY_TAB
+       WHERE company_reg_no = company_reg_no_;
+  BEGIN
+    OPEN get_comp_address;
+    FETCH get_comp_address
+      INTO result3_;
+    CLOSE get_comp_address;
+  
+    RETURN result3_;
+  END get_company_address;
+
+END CHAMALI_COMPANY_API;
+/

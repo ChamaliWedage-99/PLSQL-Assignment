@@ -1,0 +1,36 @@
+CREATE OR REPLACE PACKAGE CHAMALI_FOODITEM_API AS
+
+  --PROCEDURES
+  PROCEDURE insert_fooditem(item_id_       IN NUMBER,
+                            available_qty_ IN NUMBER,
+                            scrapped_qty_  IN NUMBER,
+                            reserved_qty_  IN NUMBER,
+                            item_name_     IN VARCHAR2);
+
+  -- CUD operations
+
+  --update
+  PROCEDURE update_record(item_id_       IN NUMBER,
+                          available_qty_ IN NUMBER,
+                          scrapped_qty_  IN NUMBER,
+                          reserved_qty_  IN NUMBER,
+                          item_name_     IN VARCHAR2);
+
+  --delete
+  PROCEDURE delete_record(item_id_ IN NUMBER);
+
+  --FUNCTIONS
+  --get the item name
+  FUNCTION get_item_name(item_id_ IN NUMBER) RETURN VARCHAR2;
+
+  --get the available quantity
+  FUNCTION get_available_qty(item_id_ IN NUMBER) RETURN NUMBER;
+
+  --get the scrapped quantity
+  FUNCTION get_scrapped_qty(item_id_ IN NUMBER) RETURN NUMBER;
+
+  --get the reserved quantity
+  FUNCTION get_reserved_qty(item_id_ IN NUMBER) RETURN NUMBER;
+
+END CHAMALI_FOODITEM_API;
+/

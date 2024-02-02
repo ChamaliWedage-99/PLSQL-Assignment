@@ -1,0 +1,25 @@
+CREATE OR REPLACE PACKAGE CHAMALI_CONTAINER_API AS
+  PROCEDURE insert_container(container_id_   IN NUMBER,
+                             current_weight_ IN NUMBER,
+                             max_volume_     IN NUMBER,
+                             max_weight_     IN NUMBER,
+                             current_volume_ IN NUMBER,
+                             company_reg_no_ IN NUMBER,
+                             branch_id_      IN NUMBER);
+
+  -- CUD operations
+
+  --update
+  PROCEDURE update_record(container_id_   IN NUMBER,
+                          current_weight_ IN NUMBER,
+                          max_volume_     IN NUMBER,
+                          max_weight_     IN NUMBER,
+                          current_volume_ IN NUMBER,
+                          company_reg_no_ IN NUMBER,
+                          branch_id_      IN NUMBER);
+
+  --delete
+  PROCEDURE delete_record(container_id_ IN NUMBER);
+
+END CHAMALI_CONTAINER_API;
+/

@@ -1,0 +1,109 @@
+CREATE OR REPLACE PACKAGE BODY CHAMALI_FOODITEM_API AS
+
+  --PROCEDURES
+  PROCEDURE insert_fooditem(item_id_       IN NUMBER,
+                            available_qty_ IN NUMBER,
+                            scrapped_qty_  IN NUMBER,
+                            reserved_qty_  IN NUMBER,
+                            item_name_     IN VARCHAR2) IS
+  BEGIN
+    INSERT INTO chamali_fooditem_tab
+      (item_id, available_qty, scrapped_qty, reserved_qty, item_name)
+    VALUES
+      (item_id_, available_qty_, scrapped_qty_, reserved_qty_, item_name_);
+  END insert_fooditem;
+
+  --CUD Operations
+
+  --update
+  PROCEDURE update_record(item_id_       IN NUMBER,
+                          available_qty_ IN NUMBER,
+                          scrapped_qty_  IN NUMBER,
+                          reserved_qty_  IN NUMBER,
+                          item_name_     IN VARCHAR2) IS
+  BEGIN
+    UPDATE CHAMALI_FOODITEM_TAB
+       SET item_id       = item_id_,
+           available_qty = available_qty_,
+           scrapped_qty  = scrapped_qty_,
+           reserved_qty  = reserved_qty_,
+           item_name     = item_name_
+     WHERE item_id = item_id_;
+  END update_record;
+
+  --delete
+  PROCEDURE delete_record(item_id_ IN NUMBER) IS
+  BEGIN
+    DELETE FROM CHAMALI_FOODITEM_TAB WHERE item_id = item_id_;
+  END delete_record;
+
+  --FUNCTIONS
+
+  --get the item name
+  FUNCTION get_item_name(item_id_ IN NUMBER) RETURN VARCHAR2 IS
+    result9_ VARCHAR2(200);
+  
+    CURSOR get_i_name IS
+      SELECT item_name FROM CHAMALI_FOODITEM_TAB WHERE item_id = item_id_;
+  BEGIN
+    OPEN get_i_name;
+    FETCH get_i_name
+      INTO result9_;
+    CLOSE get_i_name;
+  
+    RETURN result9_;
+  END get_item_name;
+
+  --get the available qty
+  FUNCTION get_available_qty(item_id_ IN NUMBER) RETURN NUMBER IS
+    result10_ NUMBER;
+  
+    CURSOR get_ava_qty IS
+      SELECT available_qty
+        FROM CHAMALI_FOODITEM_TAB
+       WHERE item_id = item_id_;
+  BEGIN
+    OPEN get_ava_qty;
+    FETCH get_ava_qty
+      INTO result10_;
+    CLOSE get_ava_qty;
+  
+    RETURN result10_;
+  END get_available_qty;
+
+  --get the scrapped qty
+  FUNCTION get_scrapped_qty(item_id_ IN NUMBER) RETURN NUMBER IS
+    result11_ NUMBER;
+  
+    CURSOR get_scr_qty IS
+      SELECT scrapped_qty
+        FROM CHAMALI_FOODITEM_TAB
+       WHERE item_id = item_id_;
+  BEGIN
+    OPEN get_scr_qty;
+    FETCH get_scr_qty
+      INTO result11_;
+    CLOSE get_scr_qty;
+  
+    RETURN result11_;
+  END get_scrapped_qty;
+
+  --get the reserved quantity
+  FUNCTION get_reserved_qty(item_id_ IN NUMBER) RETURN NUMBER IS
+    result12_ NUMBER;
+  
+    CURSOR get_res_qty IS
+      SELECT reserved_qty
+        FROM CHAMALI_FOODITEM_TAB
+       WHERE item_id = item_id_;
+  BEGIN
+    OPEN get_res_qty;
+    FETCH get_res_qty
+      INTO result12_;
+    CLOSE get_res_qty;
+  
+    RETURN result12_;
+  END get_reserved_qty;
+
+END CHAMALI_FOODITEM_API;
+/

@@ -1,0 +1,10 @@
+CREATE TABLE chamali_container_tab(
+       container_id NUMBER,
+       current_weight NUMBER ,
+       max_volume NUMBER ,
+       max_weight NUMBER ,
+       current_volume NUMBER,
+       company_reg_no NUMBER,
+       branch_id NUMBER,
+       PRIMARY KEY (container_id, company_reg_no, branch_id)
+);
